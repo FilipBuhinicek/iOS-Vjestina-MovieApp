@@ -14,7 +14,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let details = MovieUseCase().getDetails(id: 111161)
-        print(details)
     }
 
 
