@@ -223,13 +223,10 @@ class MovieDetailsViewController : ViewController, UICollectionViewDelegate {
     func collection () {
         let flowlayout = UICollectionViewFlowLayout()
         flowlayout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 200),
-        collectionViewLayout: flowlayout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowlayout )
         view.addSubview(collectionView)
         
-        let spacing = 16
-        let itemWidth = (Int(collectionView.bounds.width) - 4 * spacing)/3
-        flowlayout.itemSize = CGSize(width: itemWidth, height: 40)
+        let spacing:CGFloat = 16
         flowlayout.minimumInteritemSpacing = CGFloat(spacing)
         flowlayout.minimumLineSpacing = CGFloat(spacing)
         
@@ -237,6 +234,7 @@ class MovieDetailsViewController : ViewController, UICollectionViewDelegate {
         collectionView.autoPinEdge(toSuperviewEdge: .leading)
         collectionView.autoPinEdge(toSuperviewEdge: .trailing)
         
+        collectionView.autoSetDimension(.height, toSize: 104)
         collectionView.register(MyCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -261,7 +259,9 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
 }
 extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 109, height: 40)
+        let spacing: CGFloat = 16
+        let width = (collectionView.bounds.width - 4 * spacing) / 3
+        return CGSize(width: width, height: 40)
     }
 }
 
@@ -271,13 +271,14 @@ extension UIImageView {
             return
         }
         
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.global(qos: .background).async {
             if let imageData = try? Data(contentsOf: url) {
-                if let loadedImage = UIImage(data: imageData) {
-                    self?.image = loadedImage
+                DispatchQueue.main.async { [weak self] in
+                    if let loadedImage = UIImage(data: imageData) {
+                        self?.image = loadedImage
+                    }
                 }
             }
         }
     }
-    
 }

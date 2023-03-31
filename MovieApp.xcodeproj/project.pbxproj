@@ -50,7 +50,6 @@
 		6E7C14DF29D328820002D4D9 = {
 			isa = PBXGroup;
 			children = (
-				6E922BCA29D5D68E00EF3A4A /* MyCell.swift */,
 				6E7C14EA29D328820002D4D9 /* MovieApp */,
 				6E7C14E929D328820002D4D9 /* Products */,
 			);
@@ -68,14 +67,15 @@
 			isa = PBXGroup;
 			children = (
 				6E7C14EB29D328820002D4D9 /* AppDelegate.swift */,
+				6E7C150529D347E20002D4D9 /* LogInViewController.swift */,
 				6E26665E29D5956100448EBC /* MovieDetailsViewController.swift */,
+				6E922BCA29D5D68E00EF3A4A /* MyCell.swift */,
 				6E7C14ED29D328820002D4D9 /* SceneDelegate.swift */,
 				6E7C14EF29D328820002D4D9 /* ViewController.swift */,
 				6E7C14F129D328820002D4D9 /* Main.storyboard */,
 				6E7C14F429D328830002D4D9 /* Assets.xcassets */,
 				6E7C14F629D328830002D4D9 /* LaunchScreen.storyboard */,
 				6E7C14F929D328830002D4D9 /* Info.plist */,
-				6E7C150529D347E20002D4D9 /* LogInViewController.swift */,
 			);
 			path = MovieApp;
 			sourceTree = "<group>";

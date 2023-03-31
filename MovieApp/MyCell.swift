@@ -19,21 +19,23 @@ class MyCell: UICollectionViewCell {
         titleLabel.textAlignment = .center
         titleLabel.textColor = .black
         titleLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        
         subtitleLabel.textAlignment = .center
         subtitleLabel.textColor = .black
         subtitleLabel.font = UIFont.systemFont(ofSize: 12)
+        
         self.addSubview(titleLabel)
         self.addSubview(subtitleLabel)
         
-        let spacing: CGFloat = 16
-        let labelWidth = (contentView.bounds.width - spacing * 4)/3
-        
         titleLabel.autoPinEdge(toSuperviewEdge: .top)
         titleLabel.autoPinEdge(toSuperviewEdge: .leading)
+        titleLabel.autoPinEdge(toSuperviewEdge: .trailing)
+        
+        
         subtitleLabel.autoPinEdge(toSuperviewEdge: .leading)
+        subtitleLabel.autoPinEdge(toSuperviewEdge: .trailing)
         subtitleLabel.autoPinEdge(.top, to: .bottom, of: titleLabel)
-        titleLabel.autoSetDimensions(to: CGSize(width: labelWidth, height: 20))
-        subtitleLabel.autoSetDimensions(to: CGSize(width: labelWidth, height: 20))
+        subtitleLabel.autoPinEdge(toSuperviewEdge: .bottom)
     }
     
     required init?(coder: NSCoder){
