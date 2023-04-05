@@ -16,6 +16,17 @@ class MyCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        createViews()
+        styleViews()
+        defineLayoutForViwes()
+    }
+    
+    func createViews() {
+        self.addSubview(titleLabel)
+        self.addSubview(subtitleLabel)
+    }
+    
+    func styleViews() {
         titleLabel.textAlignment = .center
         titleLabel.textColor = .black
         titleLabel.font = UIFont.boldSystemFont(ofSize: 12)
@@ -23,14 +34,12 @@ class MyCell: UICollectionViewCell {
         subtitleLabel.textAlignment = .center
         subtitleLabel.textColor = .black
         subtitleLabel.font = UIFont.systemFont(ofSize: 12)
-        
-        self.addSubview(titleLabel)
-        self.addSubview(subtitleLabel)
-        
+    }
+    
+    func defineLayoutForViwes() {
         titleLabel.autoPinEdge(toSuperviewEdge: .top)
         titleLabel.autoPinEdge(toSuperviewEdge: .leading)
         titleLabel.autoPinEdge(toSuperviewEdge: .trailing)
-        
         
         subtitleLabel.autoPinEdge(toSuperviewEdge: .leading)
         subtitleLabel.autoPinEdge(toSuperviewEdge: .trailing)
@@ -38,7 +47,7 @@ class MyCell: UICollectionViewCell {
         subtitleLabel.autoPinEdge(toSuperviewEdge: .bottom)
     }
     
-    required init?(coder: NSCoder){
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
