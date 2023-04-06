@@ -9,7 +9,7 @@ import Foundation
 import PureLayout
 import MovieAppData
 
-class MovieDetailsViewController : UIViewController, UICollectionViewDelegate {
+class MovieDetailsViewController : UIViewController {
     private var myImageView: UIImageView!
     private var ratingLabel: UILabel!
     private var userScoreLabel: UILabel!
@@ -19,13 +19,14 @@ class MovieDetailsViewController : UIViewController, UICollectionViewDelegate {
     private var favouriteButton: UIButton!
     private var overviewLabel: UILabel!
     private var overviewTextView: UITextView!
+    private var flowLayout: UICollectionViewFlowLayout!
+    private var collectionView: UICollectionView!
     let details = MovieUseCase().getDetails(id: 111161)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print(details)
         buildView()
-        collection()
     }
     
     func createViews() {
@@ -55,30 +56,29 @@ class MovieDetailsViewController : UIViewController, UICollectionViewDelegate {
         
         overviewTextView = UITextView()
         view.addSubview(overviewTextView)
+        
+        flowLayout = UICollectionViewFlowLayout()
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout )
+        view.addSubview(collectionView)
     }
     
     func styleViews() {
         guard let url = details?.imageUrl else { return }
         myImageView.loadFrom(URLAddress: url)
-        myImageView.autoSetDimension(.height, toSize: 327)
         
-        ratingLabel.autoSetDimensions(to: CGSize(width: 22, height: 19))
         ratingLabel.textColor = .white
         let stringText = String(Double(details?.rating ?? 0.0))
         ratingLabel.text = stringText
         ratingLabel.font = UIFont.boldSystemFont(ofSize: 14)
         
-        userScoreLabel.autoSetDimensions(to: CGSize(width: 72, height: 17))
         userScoreLabel.textColor = .white
         userScoreLabel.text = "User score"
         userScoreLabel.font = UIFont.systemFont(ofSize: 12)
         
-        nameLabel.autoSetDimensions(to: CGSize(width: 350, height: 34))
         nameLabel.textColor = .white
         nameLabel.text = details?.name
         nameLabel.font = UIFont.boldSystemFont(ofSize: 24)
         
-        yearLabel.autoSetDimensions(to: CGSize(width: 105, height: 20))
         yearLabel.textColor = .white
         guard let stringDatum = details?.releaseDate else { return }
         let dateFormatter = DateFormatter()
@@ -90,7 +90,6 @@ class MovieDetailsViewController : UIViewController, UICollectionViewDelegate {
         }
         yearLabel.font = UIFont.systemFont(ofSize: 12)
         
-        genreLabel.autoSetDimensions(to: CGSize(width: 258, height: 20))
         genreLabel.textColor = .white
         var string = ""
         let length: Int = details?.categories.count ?? 0
@@ -133,7 +132,6 @@ class MovieDetailsViewController : UIViewController, UICollectionViewDelegate {
         genreLabel.text = string
         genreLabel.font = UIFont.systemFont(ofSize: 12)
         
-        favouriteButton.autoSetDimensions(to: CGSize(width: 32, height: 32))
         favouriteButton.alpha = 0.6
         favouriteButton.layer.backgroundColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1).cgColor
         favouriteButton.layer.cornerRadius = 16
@@ -145,46 +143,64 @@ class MovieDetailsViewController : UIViewController, UICollectionViewDelegate {
         
         overviewLabel.textColor = .black
         overviewLabel.text = "Overview"
-        overviewLabel.autoSetDimensions(to: CGSize(width: 350, height: 31))
         overviewLabel.font = UIFont.boldSystemFont(ofSize: 20)
         
         overviewTextView.textColor = .black
         overviewTextView.text = details?.summary
-        overviewTextView.autoSetDimensions(to: CGSize(width: 358, height: 64))
         overviewTextView.font = UIFont.systemFont(ofSize: 14)
         overviewTextView.isEditable = false
+        
+        flowLayout.scrollDirection = .vertical
+        let spacing:CGFloat = 16
+        flowLayout.minimumInteritemSpacing = CGFloat(spacing)
+        flowLayout.minimumLineSpacing = CGFloat(spacing)
+        collectionView.register(MyCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
     
     func defineLayoutForViews() {
+        myImageView.autoSetDimension(.height, toSize: 327)
         myImageView.autoPinEdge(toSuperviewEdge: .leading)
         myImageView.autoPinEdge(toSuperviewEdge: .trailing)
         myImageView.autoPinEdge(toSuperviewEdge: .top)
         
+        ratingLabel.autoSetDimensions(to: CGSize(width: 22, height: 19))
         ratingLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
         ratingLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 134)
         
+        userScoreLabel.autoSetDimensions(to: CGSize(width: 72, height: 17))
         userScoreLabel.autoPinEdge(.leading, to: .trailing, of: ratingLabel, withOffset: 8)
         userScoreLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 135)
         
+        nameLabel.autoSetDimensions(to: CGSize(width: 350, height: 34))
         nameLabel.autoPinEdge(.top, to: .bottom, of: userScoreLabel, withOffset: 17)
         nameLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
         
+        yearLabel.autoSetDimensions(to: CGSize(width: 105, height: 20))
         yearLabel.autoPinEdge(.top, to: .bottom, of: nameLabel, withOffset: 16)
         yearLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
         
+        genreLabel.autoSetDimensions(to: CGSize(width: 258, height: 20))
         genreLabel.autoPinEdge(.top, to: .bottom, of: yearLabel)
         genreLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
         
+        favouriteButton.autoSetDimensions(to: CGSize(width: 32, height: 32))
         favouriteButton.autoPinEdge(.top, to: .bottom, of: genreLabel, withOffset: 16)
         favouriteButton.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
         
+        overviewLabel.autoSetDimensions(to: CGSize(width: 350, height: 31))
         overviewLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
         overviewLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 349)
         
+        overviewTextView.autoSetDimensions(to: CGSize(width: 358, height: 64))
         overviewTextView.autoPinEdge(toSuperviewEdge: .leading, withInset: 16)
         overviewTextView.autoPinEdge(.top, to: .bottom, of: overviewLabel, withOffset: 8.38)
         
-        
+        collectionView.autoSetDimension(.height, toSize: 104)
+        collectionView.autoPinEdge(toSuperviewEdge: .top, withInset: 480)
+        collectionView.autoPinEdge(toSuperviewEdge: .leading)
+        collectionView.autoPinEdge(toSuperviewEdge: .trailing)
     }
 
     func buildView() {
@@ -199,25 +215,33 @@ class MovieDetailsViewController : UIViewController, UICollectionViewDelegate {
         let minute = minutes % 60
         return String(format: "%2dh %2dm", hours,minute)
     }
+}
+
+extension MovieDetailsViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        details?.crewMembers.count ?? 0
+    }
     
-    func collection () {
-        let flowlayout = UICollectionViewFlowLayout()
-        flowlayout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowlayout )
-        view.addSubview(collectionView)
-        
-        let spacing:CGFloat = 16
-        flowlayout.minimumInteritemSpacing = CGFloat(spacing)
-        flowlayout.minimumLineSpacing = CGFloat(spacing)
-        collectionView.autoSetDimension(.height, toSize: 104)
-        collectionView.register(MyCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        
-        collectionView.autoPinEdge(toSuperviewEdge: .top, withInset: 480)
-        collectionView.autoPinEdge(toSuperviewEdge: .leading)
-        collectionView.autoPinEdge(toSuperviewEdge: .trailing)
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        1
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! MyCell
+        let data = details?.crewMembers[indexPath.item]
+        cell.titleLabel.text = data?.name
+        cell.subtitleLabel.text = data?.role
+        return cell
     }
 }
+extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let spacing: CGFloat = 16
+        let screenWidth = collectionView.bounds.width
+        let cellWidth = (screenWidth - 4 * spacing) / 3
+        let cellHeigth: CGFloat = 40
+        return CGSize(width: cellWidth, height: cellHeigth)
+    }
+}
+
 
 

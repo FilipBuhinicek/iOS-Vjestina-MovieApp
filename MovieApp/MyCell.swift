@@ -15,7 +15,6 @@ class MyCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         createViews()
         styleViews()
         defineLayoutForViwes()
