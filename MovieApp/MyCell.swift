@@ -28,11 +28,11 @@ class MyCell: UICollectionViewCell {
     func styleViews() {
         titleLabel.textAlignment = .center
         titleLabel.textColor = .black
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        titleLabel.font = .boldSystemFont(ofSize: 12)
         
         subtitleLabel.textAlignment = .center
         subtitleLabel.textColor = .black
-        subtitleLabel.font = UIFont.systemFont(ofSize: 12)
+        subtitleLabel.font = .systemFont(ofSize: 12)
     }
     
     func defineLayoutForViwes() {
