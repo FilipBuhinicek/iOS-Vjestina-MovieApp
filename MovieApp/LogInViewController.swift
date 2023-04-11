@@ -45,12 +45,13 @@ class LogInViewController: UIViewController {
     }
     
     func styleViews() {
+        view.backgroundColor = UIColor(red: 0.118, green: 0.118, blue: 0.2, alpha: 1)
         signInLabel.textColor = .white
-        signInLabel.font = UIFont.systemFont(ofSize: 24)
+        signInLabel.font = .systemFont(ofSize: 24)
         signInLabel.textAlignment = .center
         signInLabel.text = "Sign in"
         
-        emailLabel.font = UIFont.systemFont(ofSize: 14)
+        emailLabel.font = .systemFont(ofSize: 14)
         emailLabel.text = "Email address"
         emailLabel.textColor = .white
         
@@ -64,7 +65,7 @@ class LogInViewController: UIViewController {
         emailTextField.leftView = leftShift1
         emailTextField.leftViewMode = .always
         
-        passLabel.font = UIFont.systemFont(ofSize: 14)
+        passLabel.font = .systemFont(ofSize: 14)
         passLabel.text = "Password"
         passLabel.textColor = .white
         
@@ -111,7 +112,6 @@ class LogInViewController: UIViewController {
     }
     
     func buildView() {
-        view.backgroundColor = UIColor(red: 0.118, green: 0.118, blue: 0.2, alpha: 1)
         createViews()
         styleViews()
         defineLayoutForViews()

@@ -9,7 +9,7 @@ import Foundation
 import PureLayout
 import MovieAppData
 
-class MovieDetailsViewController : UIViewController {
+class MovieDetailsViewController: UIViewController {
     private var myImageView: UIImageView!
     private var ratingLabel: UILabel!
     private var userScoreLabel: UILabel!
@@ -25,7 +25,6 @@ class MovieDetailsViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(details)
         buildView()
     }
     
@@ -63,21 +62,22 @@ class MovieDetailsViewController : UIViewController {
     }
     
     func styleViews() {
+        view.backgroundColor = .white
         guard let url = details?.imageUrl else { return }
         myImageView.loadFrom(URLAddress: url)
         
         ratingLabel.textColor = .white
         let stringText = String(Double(details?.rating ?? 0.0))
         ratingLabel.text = stringText
-        ratingLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        ratingLabel.font = .boldSystemFont(ofSize: 14)
         
         userScoreLabel.textColor = .white
         userScoreLabel.text = "User score"
-        userScoreLabel.font = UIFont.systemFont(ofSize: 12)
+        userScoreLabel.font = .systemFont(ofSize: 12)
         
         nameLabel.textColor = .white
         nameLabel.text = details?.name
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        nameLabel.font = .boldSystemFont(ofSize: 24)
         
         yearLabel.textColor = .white
         guard let stringDatum = details?.releaseDate else { return }
@@ -88,7 +88,7 @@ class MovieDetailsViewController : UIViewController {
             let formattedDate = dateFormatter.string(from: date)
             yearLabel.text = formattedDate + " (US)"
         }
-        yearLabel.font = UIFont.systemFont(ofSize: 12)
+        yearLabel.font = .systemFont(ofSize: 12)
         
         genreLabel.textColor = .white
         var string = ""
@@ -130,7 +130,7 @@ class MovieDetailsViewController : UIViewController {
         string.append(" ")
         string.append(duration)
         genreLabel.text = string
-        genreLabel.font = UIFont.systemFont(ofSize: 12)
+        genreLabel.font = .systemFont(ofSize: 12)
         
         favouriteButton.alpha = 0.6
         favouriteButton.layer.backgroundColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1).cgColor
@@ -143,11 +143,11 @@ class MovieDetailsViewController : UIViewController {
         
         overviewLabel.textColor = .black
         overviewLabel.text = "Overview"
-        overviewLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        overviewLabel.font = .boldSystemFont(ofSize: 20)
         
         overviewTextView.textColor = .black
         overviewTextView.text = details?.summary
-        overviewTextView.font = UIFont.systemFont(ofSize: 14)
+        overviewTextView.font = .systemFont(ofSize: 14)
         overviewTextView.isEditable = false
         
         flowLayout.scrollDirection = .vertical
@@ -204,7 +204,6 @@ class MovieDetailsViewController : UIViewController {
     }
 
     func buildView() {
-        view.backgroundColor = .white
         createViews()
         styleViews()
         defineLayoutForViews()
