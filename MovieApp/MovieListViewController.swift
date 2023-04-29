@@ -22,6 +22,12 @@ class MovieListViewController: UIViewController {
         buildView()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
     func createViews() {
         flowLayout = UICollectionViewFlowLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout )
@@ -40,10 +46,10 @@ class MovieListViewController: UIViewController {
     
     func defineLayoutForViews() {
         flowLayout.scrollDirection = .vertical
-        collectionView.autoPinEdge(toSuperviewEdge: .top, withInset: 68)
+        collectionView.autoPinEdge(toSuperviewSafeArea: .top, withInset: 32)
+        collectionView.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 45)
         collectionView.autoPinEdge(toSuperviewEdge: .leading, withInset: 16)
         collectionView.autoPinEdge(toSuperviewEdge: .trailing, withInset: 16)
-        collectionView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 58)
     }
 
     func buildView() {
@@ -72,6 +78,7 @@ extension MovieListViewController: UICollectionViewDataSource {
 
 extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 358, height: 142)
+        let width = collectionView.bounds.width
+        return CGSize(width: width, height: 142)
     }
 }

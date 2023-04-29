@@ -22,6 +22,12 @@ class MovieCategoriesViewController: UIViewController {
         buildView()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
     func createViews() {
         flowLayout = UICollectionViewFlowLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout )
@@ -43,7 +49,7 @@ class MovieCategoriesViewController: UIViewController {
         collectionView.autoPinEdge(toSuperviewSafeArea: .top, withInset: 25)
         collectionView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
         collectionView.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 45)
-        collectionView.autoPinEdge(toSuperviewSafeArea: .trailing)
+        collectionView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
     }
 
     func buildView() {
@@ -62,26 +68,27 @@ extension MovieCategoriesViewController: UICollectionViewDataSource {
         1
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCategoryCell", for: indexPath) as! MovieCategoryCell?
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCategoryCell", for: indexPath) as? MovieCategoryCell else { return UICollectionViewCell() }
+
         if indexPath.item == 0 {
-            cell?.indexOf = 0;
-            cell?.title.text = "What's popular"
+            cell.set(title: "What's popular", items: details.popularMovies)
         }
         if indexPath.item == 1 {
-            cell?.indexOf = 1;
-            cell?.title.text = "Free to Watch"
+            cell.set(title: "Free to Watch", items: details.freeToWatchMovies)
         }
         if indexPath.item == 2 {
-            cell?.indexOf = 2;
-            cell?.title.text = "Trending"
+            cell.set(title: "Trending", items: details.trendingMovies)
         }
-        cell?.layoutIfNeeded()
-        return cell!
+
+        cell.layoutIfNeeded()
+        
+        return cell
     }
 }
 
 extension MovieCategoriesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 374, height: 223)
+        let width = collectionView.bounds.width
+        return CGSize(width: width, height: 223)
     }
 }

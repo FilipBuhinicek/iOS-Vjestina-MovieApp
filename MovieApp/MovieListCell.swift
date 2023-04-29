@@ -13,7 +13,7 @@ import SDWebImage
 class MovieListCell: UICollectionViewCell {
     var image = UIImageView()
     var title = UILabel()
-    var summary = UITextView()
+    var summary = UILabel()
     var shadowView: UIView!
     var roundedView: UIView!
     let details = MovieUseCase()
@@ -60,11 +60,10 @@ class MovieListCell: UICollectionViewCell {
         self.backgroundColor = .white
         title.textColor = .black
         title.font = .boldSystemFont(ofSize: 14)
-        title.numberOfLines = 2
         
         summary.textColor = UIColor(red: 0.51, green: 0.51, blue: 0.51, alpha: 1)
         summary.font = .systemFont(ofSize: 12)
-        summary.isEditable = false
+        summary.numberOfLines = 3
     }
     
     func defineLayoutForViwes() {
@@ -72,15 +71,15 @@ class MovieListCell: UICollectionViewCell {
         image.autoPinEdge(toSuperviewEdge: .leading)
         image.autoPinEdge(toSuperviewEdge: .top)
       
-        title.autoSetDimension(.width, toSize: 250)
-        title.autoSetDimension(.height, toSize: 40)
-        title.autoPinEdge(toSuperviewEdge: .top, withInset: 4)
+        title.autoPinEdge(toSuperviewEdge: .top, withInset: 12)
         title.autoPinEdge(toSuperviewEdge: .leading, withInset: 113)
+        title.autoPinEdge(toSuperviewEdge: .trailing, withInset: 12)
+        title.autoPinEdge(toSuperviewEdge: .bottom, withInset: 110)
         
-        summary.autoSetDimension(.width, toSize: 233)
-        summary.autoPinEdge(toSuperviewEdge: .bottom, withInset: 46)
-        summary.autoPinEdge(toSuperviewEdge: .top, withInset: 46)
+        summary.autoPinEdge(toSuperviewEdge: .bottom, withInset: 32)
+        summary.autoPinEdge(toSuperviewEdge: .top, withInset: 40)
         summary.autoPinEdge(toSuperviewEdge: .leading, withInset: 113)
+        summary.autoPinEdge(toSuperviewEdge: .trailing, withInset: 12)
     }
 
     func configureCell(movie: MovieModel) {

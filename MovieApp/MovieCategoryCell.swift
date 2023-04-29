@@ -14,14 +14,22 @@ class MovieCategoryCell: UICollectionViewCell {
     var indexOf: Int!
     private var collectionViewCell: UICollectionView!
     private var flowLayout: UICollectionViewFlowLayout!
-    let details = MovieUseCase()
-    var title = UILabel()
+//    let details = MovieUseCase()
+    private var title = UILabel()
+    private var movies: [MovieModel] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         createViews()
         styleViews()
         defineLayoutForViwes()
+    }
+
+    func set(title: String, items: [MovieModel]) {
+        self.title.text = title
+        movies = items
+
+//        collectionViewCell.reloadData()
     }
     
     func createViews() {
@@ -64,34 +72,40 @@ class MovieCategoryCell: UICollectionViewCell {
 
 extension MovieCategoryCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var count: Int!
-        if indexOf == 0 {
-            count = details.popularMovies.count
-        }
-        if indexOf == 1 {
-            count = details.freeToWatchMovies.count
-        }
-        if indexOf == 2 {
-            count = details.trendingMovies.count
-        }
-        return count
+        movies.count
+//        var count: Int!
+//        if indexOf == 0 {
+//            count = details.popularMovies.count
+//        }
+//        if indexOf == 1 {
+//            count = details.freeToWatchMovies.count
+//        }
+//        if indexOf == 2 {
+//            count = details.trendingMovies.count
+//        }
+//        return count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCategoryListCell", for: indexPath) as! MovieCategoryListCell?
-        if indexOf == 0 {
-            cell?.configureCell(movie: details.popularMovies[indexPath.item])
-        }
-        if indexOf == 1 {
-            cell?.configureCell(movie: details.freeToWatchMovies[indexPath.item])
-        }
-        if indexOf == 2 {
-            cell?.configureCell(movie: details.trendingMovies[indexPath.item])
-        }
-        return cell!
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCategoryListCell", for: indexPath) as? MovieCategoryListCell,
+            self.movies.count > indexPath.item
+        else { return UICollectionViewCell() }
+
+        cell.configureCell(movie: self.movies[indexPath.item])
+        return cell
+//        if indexOf == 0 {
+//            cell?.configureCell(movie: details.popularMovies[indexPath.item])
+//        }
+//        if indexOf == 1 {
+//            cell?.configureCell(movie: details.freeToWatchMovies[indexPath.item])
+//        }
+//        if indexOf == 2 {
+//            cell?.configureCell(movie: details.trendingMovies[indexPath.item])
+//        }
+//        return cell!
     }
 }
 
