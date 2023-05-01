@@ -4,7 +4,6 @@
 //
 //  Created by endava-bootcamp on 30.03.2023..
 //
-
 import Foundation
 import PureLayout
 import MovieAppData
@@ -22,6 +21,7 @@ class MovieDetailsViewController: UIViewController {
     private var flowLayout: UICollectionViewFlowLayout!
     private var collectionView: UICollectionView!
     let details = MovieUseCase().getDetails(id: 111161)
+    private var scrollView: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +29,11 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func createViews() {
+        scrollView = UIScrollView()
+        view.addSubview(scrollView)
+        
         myImageView = UIImageView()
-        view.addSubview(myImageView)
+        scrollView.addSubview(myImageView)
         
         ratingLabel = UILabel()
         myImageView.addSubview(ratingLabel)
@@ -51,14 +54,14 @@ class MovieDetailsViewController: UIViewController {
         myImageView.addSubview(favouriteButton)
         
         overviewLabel = UILabel()
-        view.addSubview(overviewLabel)
+        scrollView.addSubview(overviewLabel)
         
         overviewTextView = UITextView()
-        view.addSubview(overviewTextView)
+        scrollView.addSubview(overviewTextView)
         
         flowLayout = UICollectionViewFlowLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout )
-        view.addSubview(collectionView)
+        scrollView.addSubview(collectionView)
     }
     
     func styleViews() {
@@ -160,47 +163,52 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func defineLayoutForViews() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.frame = view.bounds
+        scrollView.autoPinEdgesToSuperviewSafeArea()
+        scrollView.contentSize.height = view.bounds.height
+        
         myImageView.autoSetDimension(.height, toSize: 327)
-        myImageView.autoPinEdge(toSuperviewEdge: .leading)
-        myImageView.autoPinEdge(toSuperviewEdge: .trailing)
-        myImageView.autoPinEdge(toSuperviewEdge: .top)
+        myImageView.autoPinEdge(toSuperviewSafeArea: .leading)
+        myImageView.autoPinEdge(toSuperviewSafeArea: .trailing)
+        myImageView.autoPinEdge(toSuperviewSafeArea: .top)
         
         ratingLabel.autoSetDimensions(to: CGSize(width: 22, height: 19))
-        ratingLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
-        ratingLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 134)
+        ratingLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        ratingLabel.autoPinEdge(toSuperviewSafeArea: .top, withInset: 134)
         
         userScoreLabel.autoSetDimensions(to: CGSize(width: 72, height: 17))
         userScoreLabel.autoPinEdge(.leading, to: .trailing, of: ratingLabel, withOffset: 8)
-        userScoreLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 135)
+        userScoreLabel.autoPinEdge(toSuperviewSafeArea: .top, withInset: 135)
         
         nameLabel.autoSetDimensions(to: CGSize(width: 350, height: 34))
         nameLabel.autoPinEdge(.top, to: .bottom, of: userScoreLabel, withOffset: 17)
-        nameLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
+        nameLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
         
         yearLabel.autoSetDimensions(to: CGSize(width: 105, height: 20))
         yearLabel.autoPinEdge(.top, to: .bottom, of: nameLabel, withOffset: 16)
-        yearLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
+        yearLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
         
         genreLabel.autoSetDimensions(to: CGSize(width: 258, height: 20))
         genreLabel.autoPinEdge(.top, to: .bottom, of: yearLabel)
-        genreLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
+        genreLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
         
         favouriteButton.autoSetDimensions(to: CGSize(width: 32, height: 32))
         favouriteButton.autoPinEdge(.top, to: .bottom, of: genreLabel, withOffset: 16)
-        favouriteButton.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
+        favouriteButton.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
         
         overviewLabel.autoSetDimensions(to: CGSize(width: 350, height: 31))
-        overviewLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
-        overviewLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 349)
+        overviewLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        overviewLabel.autoPinEdge(.top, to: .bottom, of: myImageView, withOffset: 22)
         
         overviewTextView.autoSetDimensions(to: CGSize(width: 358, height: 64))
-        overviewTextView.autoPinEdge(toSuperviewEdge: .leading, withInset: 16)
+        overviewTextView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
         overviewTextView.autoPinEdge(.top, to: .bottom, of: overviewLabel, withOffset: 8.38)
         
         collectionView.autoSetDimension(.height, toSize: 104)
-        collectionView.autoPinEdge(toSuperviewEdge: .top, withInset: 480)
-        collectionView.autoPinEdge(toSuperviewEdge: .leading)
-        collectionView.autoPinEdge(toSuperviewEdge: .trailing)
+        collectionView.autoPinEdge(.top, to: .bottom, of: overviewTextView, withOffset: 27.62)
+        collectionView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
+        collectionView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
     }
 
     func buildView() {
@@ -241,6 +249,4 @@ extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: cellWidth, height: cellHeigth)
     }
 }
-
-
 
