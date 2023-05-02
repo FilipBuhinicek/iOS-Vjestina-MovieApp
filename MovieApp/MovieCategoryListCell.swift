@@ -1,10 +1,3 @@
-//
-//  MovieListCell.swift
-//  MovieApp
-//
-//  Created by endava-bootcamp on 09.04.2023..
-//
-
 import Foundation
 import PureLayout
 import MovieAppData
@@ -13,7 +6,6 @@ import SDWebImage
 class MovieCategoryListCell: UICollectionViewCell {
     var imageView = UIImageView()
     var favouriteButton = UIButton()
-    let details = MovieUseCase()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,8 +14,12 @@ class MovieCategoryListCell: UICollectionViewCell {
         defineLayoutForViwes()
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func createViews() {
-        self.addSubview(imageView)
+        addSubview(imageView)
         imageView.addSubview(favouriteButton)
     }
     
@@ -65,10 +61,6 @@ class MovieCategoryListCell: UICollectionViewCell {
                 }
             })
         }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

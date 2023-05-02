@@ -1,10 +1,3 @@
-//
-//  MovieListViewController.swift
-//  MovieApp
-//
-//  Created by endava-bootcamp on 09.04.2023..
-//
-
 import Foundation
 import PureLayout
 import UIKit
@@ -13,9 +6,9 @@ import SDWebImage
 
 class MovieCategoriesViewController: UIViewController {
     
-    private var collectionView: UICollectionView!
+    private var moviesSection: UICollectionView!
     private var flowLayout: UICollectionViewFlowLayout!
-    let details = MovieUseCase()
+    let movies = MovieUseCase()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,20 +18,17 @@ class MovieCategoriesViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        collectionView.collectionViewLayout.invalidateLayout()
+        moviesSection.collectionViewLayout.invalidateLayout()
     }
     
     func createViews() {
         flowLayout = UICollectionViewFlowLayout()
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout )
-        view.addSubview(collectionView)
+        moviesSection = UICollectionView(frame: .zero, collectionViewLayout: flowLayout )
+        view.addSubview(moviesSection)
     }
     
     func styleViews() {
         view.backgroundColor = .white
-        collectionView.register(MovieCategoryCell.self, forCellWithReuseIdentifier: "MovieCategoryCell")
-        collectionView.dataSource = self
-        collectionView.delegate = self
         
         let spacing:CGFloat = 40
         flowLayout.minimumLineSpacing = CGFloat(spacing)
@@ -46,10 +36,14 @@ class MovieCategoriesViewController: UIViewController {
     
     func defineLayoutForViews() {
         flowLayout.scrollDirection = .vertical
-        collectionView.autoPinEdge(toSuperviewSafeArea: .top, withInset: 25)
-        collectionView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
-        collectionView.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 45)
-        collectionView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
+        moviesSection.autoPinEdge(toSuperviewSafeArea: .top, withInset: 25)
+        moviesSection.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
+        moviesSection.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 45)
+        moviesSection.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
+        
+        moviesSection.register(MovieCategoryCell.self, forCellWithReuseIdentifier: "MovieCategoryCell")
+        moviesSection.dataSource = self
+        moviesSection.delegate = self
     }
 
     func buildView() {
@@ -71,17 +65,15 @@ extension MovieCategoriesViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCategoryCell", for: indexPath) as? MovieCategoryCell else { return UICollectionViewCell() }
 
         if indexPath.item == 0 {
-            cell.set(title: "What's popular", items: details.popularMovies)
+            cell.set(title: "What's popular", items: movies.popularMovies)
         }
         if indexPath.item == 1 {
-            cell.set(title: "Free to Watch", items: details.freeToWatchMovies)
+            cell.set(title: "Free to Watch", items: movies.freeToWatchMovies)
         }
         if indexPath.item == 2 {
-            cell.set(title: "Trending", items: details.trendingMovies)
+            cell.set(title: "Trending", items: movies.trendingMovies)
         }
-
         cell.layoutIfNeeded()
-        
         return cell
     }
 }

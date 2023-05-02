@@ -1,9 +1,3 @@
-//
-//  MovieDetailsViewController.swift
-//  MovieApp
-//
-//  Created by endava-bootcamp on 30.03.2023..
-//
 import Foundation
 import PureLayout
 import MovieAppData
@@ -22,6 +16,13 @@ class MovieDetailsViewController: UIViewController {
     private var collectionView: UICollectionView!
     let details = MovieUseCase().getDetails(id: 111161)
     private var scrollView: UIScrollView!
+    private var contentView: UIView!
+    
+    func buildView() {
+        createViews()
+        styleViews()
+        defineLayoutForViews()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +33,11 @@ class MovieDetailsViewController: UIViewController {
         scrollView = UIScrollView()
         view.addSubview(scrollView)
         
+        contentView = UIView()
+        scrollView.addSubview(contentView)
+        
         myImageView = UIImageView()
-        scrollView.addSubview(myImageView)
+        contentView.addSubview(myImageView)
         
         ratingLabel = UILabel()
         myImageView.addSubview(ratingLabel)
@@ -54,14 +58,14 @@ class MovieDetailsViewController: UIViewController {
         myImageView.addSubview(favouriteButton)
         
         overviewLabel = UILabel()
-        scrollView.addSubview(overviewLabel)
+        contentView.addSubview(overviewLabel)
         
         overviewTextView = UITextView()
-        scrollView.addSubview(overviewTextView)
+        contentView.addSubview(overviewTextView)
         
         flowLayout = UICollectionViewFlowLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout )
-        scrollView.addSubview(collectionView)
+        contentView.addSubview(collectionView)
     }
     
     func styleViews() {
@@ -152,21 +156,14 @@ class MovieDetailsViewController: UIViewController {
         overviewTextView.text = details?.summary
         overviewTextView.font = .systemFont(ofSize: 14)
         overviewTextView.isEditable = false
-        
-        flowLayout.scrollDirection = .vertical
-        let spacing:CGFloat = 16
-        flowLayout.minimumInteritemSpacing = CGFloat(spacing)
-        flowLayout.minimumLineSpacing = CGFloat(spacing)
-        collectionView.register(MyCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.dataSource = self
-        collectionView.delegate = self
     }
     
     func defineLayoutForViews() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.frame = view.bounds
-        scrollView.autoPinEdgesToSuperviewSafeArea()
-        scrollView.contentSize.height = view.bounds.height
+        scrollView.autoPinEdgesToSuperviewEdges()
+        
+        contentView.autoMatch(.width, to: .width, of: scrollView)
+        contentView.autoPinEdge(toSuperviewEdge: .top)
+        contentView.autoPinEdge(toSuperviewEdge: .bottom)
         
         myImageView.autoSetDimension(.height, toSize: 327)
         myImageView.autoPinEdge(toSuperviewSafeArea: .leading)
@@ -209,12 +206,14 @@ class MovieDetailsViewController: UIViewController {
         collectionView.autoPinEdge(.top, to: .bottom, of: overviewTextView, withOffset: 27.62)
         collectionView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
         collectionView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
-    }
-
-    func buildView() {
-        createViews()
-        styleViews()
-        defineLayoutForViews()
+        
+        flowLayout.scrollDirection = .vertical
+        let spacing:CGFloat = 16
+        flowLayout.minimumInteritemSpacing = CGFloat(spacing)
+        flowLayout.minimumLineSpacing = CGFloat(spacing)
+        collectionView.register(MyCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
     
     func formatTime(minutes: Int) -> String {
@@ -249,4 +248,3 @@ extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: cellWidth, height: cellHeigth)
     }
 }
-

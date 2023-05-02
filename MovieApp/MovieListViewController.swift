@@ -1,10 +1,3 @@
-//
-//  MovieListViewController.swift
-//  MovieApp
-//
-//  Created by endava-bootcamp on 09.04.2023..
-//
-
 import Foundation
 import PureLayout
 import UIKit
@@ -15,7 +8,7 @@ class MovieListViewController: UIViewController {
     
     private var collectionView: UICollectionView!
     private var flowLayout: UICollectionViewFlowLayout!
-    let details = MovieUseCase()
+    let moviesInfo = MovieUseCase()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,10 +29,6 @@ class MovieListViewController: UIViewController {
     
     func styleViews() {
         view.backgroundColor = .white
-        collectionView.register(MovieListCell.self, forCellWithReuseIdentifier: "MovieListCell")
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        
         let spacing:CGFloat = 12
         flowLayout.minimumLineSpacing = CGFloat(spacing)
     }
@@ -48,8 +37,12 @@ class MovieListViewController: UIViewController {
         flowLayout.scrollDirection = .vertical
         collectionView.autoPinEdge(toSuperviewSafeArea: .top, withInset: 32)
         collectionView.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 45)
-        collectionView.autoPinEdge(toSuperviewEdge: .leading, withInset: 16)
-        collectionView.autoPinEdge(toSuperviewEdge: .trailing, withInset: 16)
+        collectionView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
+        collectionView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
+        
+        collectionView.register(MovieListCell.self, forCellWithReuseIdentifier: "MovieListCell")
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
 
     func buildView() {
@@ -61,7 +54,7 @@ class MovieListViewController: UIViewController {
 
 extension MovieListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        details.allMovies.count
+        moviesInfo.allMovies.count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -69,7 +62,7 @@ extension MovieListViewController: UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieListCell", for: indexPath) as! MovieListCell?
-        let movie = details.allMovies[indexPath.item]
+        let movie = moviesInfo.allMovies[indexPath.item]
         cell?.configureCell(movie: movie)
         cell?.layoutIfNeeded()
         return cell!

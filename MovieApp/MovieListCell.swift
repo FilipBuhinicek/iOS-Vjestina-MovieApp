@@ -1,10 +1,3 @@
-//
-//  MovieListCell.swift
-//  MovieApp
-//
-//  Created by endava-bootcamp on 09.04.2023..
-//
-
 import Foundation
 import PureLayout
 import MovieAppData
@@ -16,7 +9,6 @@ class MovieListCell: UICollectionViewCell {
     var summary = UILabel()
     var shadowView: UIView!
     var roundedView: UIView!
-    let details = MovieUseCase()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,38 +18,29 @@ class MovieListCell: UICollectionViewCell {
     }
     
     func createViews() {
-        shadowView = {
-            let view = UIView()
-            layer.masksToBounds = false
-            view.backgroundColor = .clear
-            view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
-            view.layer.shadowOpacity = 1
-            view.layer.shadowRadius = 20
-            view.layer.shadowOffset = CGSize(width: 0, height: 4)
-            return view
-        }()
-        roundedView = {
-            let view = UIView()
-            view.backgroundColor = .white
-            view.clipsToBounds = true
-            view.layer.cornerRadius = 10
-            return view
-        }()
+        shadowView = UIView()
+        roundedView = UIView()
         contentView.addSubview(shadowView)
         shadowView.addSubview(roundedView)
         roundedView.addSubview(image)
         roundedView.addSubview(title)
         roundedView.addSubview(summary)
-       
-        shadowView.translatesAutoresizingMaskIntoConstraints = false
-        shadowView.autoPinEdgesToSuperviewEdges()
-        
-        roundedView.translatesAutoresizingMaskIntoConstraints = false
-        roundedView.autoPinEdgesToSuperviewEdges()
     }
     
     func styleViews() {
-        self.backgroundColor = .white
+        backgroundColor = .white
+        
+        shadowView.layer.masksToBounds = false
+        shadowView.backgroundColor = .clear
+        shadowView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+        shadowView.layer.shadowOpacity = 1
+        shadowView.layer.shadowRadius = 20
+        shadowView.layer.shadowOffset = CGSize(width: 0, height: 4)
+        
+        roundedView.backgroundColor = .white
+        roundedView.clipsToBounds = true
+        roundedView.layer.cornerRadius = 10
+        
         title.textColor = .black
         title.font = .boldSystemFont(ofSize: 14)
         
@@ -80,6 +63,12 @@ class MovieListCell: UICollectionViewCell {
         summary.autoPinEdge(toSuperviewEdge: .top, withInset: 40)
         summary.autoPinEdge(toSuperviewEdge: .leading, withInset: 113)
         summary.autoPinEdge(toSuperviewEdge: .trailing, withInset: 12)
+        
+        shadowView.translatesAutoresizingMaskIntoConstraints = false
+        shadowView.autoPinEdgesToSuperviewEdges()
+        
+        roundedView.translatesAutoresizingMaskIntoConstraints = false
+        roundedView.autoPinEdgesToSuperviewEdges()
     }
 
     func configureCell(movie: MovieModel) {

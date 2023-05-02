@@ -24,6 +24,7 @@
 		6E7C150429D329530002D4D9 /* MovieAppData in Frameworks */ = {isa = PBXBuildFile; productRef = 6E7C150329D329530002D4D9 /* MovieAppData */; };
 		6E7C150629D347E20002D4D9 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C150529D347E20002D4D9 /* LogInViewController.swift */; };
 		6E922BCB29D5D68E00EF3A4A /* MyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E922BCA29D5D68E00EF3A4A /* MyCell.swift */; };
+		6E9857172A018094003D71D9 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9857162A018094003D71D9 /* ScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		6E7C14F929D328830002D4D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E7C150529D347E20002D4D9 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		6E922BCA29D5D68E00EF3A4A /* MyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCell.swift; sourceTree = "<group>"; };
+		6E9857162A018094003D71D9 /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 				6E7C14F629D328830002D4D9 /* LaunchScreen.storyboard */,
 				6E7C14F929D328830002D4D9 /* Info.plist */,
 				6E705CB529DD7A5100515045 /* UIImageView+Extensions.swift */,
+				6E9857162A018094003D71D9 /* ScrollView.swift */,
 			);
 			path = MovieApp;
 			sourceTree = "<group>";
@@ -183,6 +186,7 @@
 				6E1F95CC29E3420E00A8464F /* MovieListCell.swift in Sources */,
 				6E7C150629D347E20002D4D9 /* LogInViewController.swift in Sources */,
 				6E1F95D529E4196300A8464F /* MovieCategoryCell.swift in Sources */,
+				6E9857172A018094003D71D9 /* ScrollView.swift in Sources */,
 				6E922BCB29D5D68E00EF3A4A /* MyCell.swift in Sources */,
 				6E1F95CA29E3410000A8464F /* MovieListViewController.swift in Sources */,
 				6E1F95D729E41FB700A8464F /* MovieCategoryListCell.swift in Sources */,
