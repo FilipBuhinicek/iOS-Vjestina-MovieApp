@@ -164,6 +164,8 @@ class MovieDetailsViewController: UIViewController {
         contentView.autoMatch(.width, to: .width, of: scrollView)
         contentView.autoPinEdge(toSuperviewEdge: .top)
         contentView.autoPinEdge(toSuperviewEdge: .bottom)
+        contentView.autoPinEdge(toSuperviewEdge: .trailing)
+        contentView.autoPinEdge(toSuperviewEdge: .leading)
         
         myImageView.autoSetDimension(.height, toSize: 327)
         myImageView.autoPinEdge(toSuperviewSafeArea: .leading)
@@ -194,18 +196,21 @@ class MovieDetailsViewController: UIViewController {
         favouriteButton.autoPinEdge(.top, to: .bottom, of: genreLabel, withOffset: 16)
         favouriteButton.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
         
-        overviewLabel.autoSetDimensions(to: CGSize(width: 350, height: 31))
+        overviewLabel.autoSetDimension(.height, toSize: 31)
         overviewLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        overviewLabel.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)
         overviewLabel.autoPinEdge(.top, to: .bottom, of: myImageView, withOffset: 22)
-        
-        overviewTextView.autoSetDimensions(to: CGSize(width: 358, height: 64))
+
+        overviewTextView.autoSetDimension(.height, toSize: 64)
         overviewTextView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
+        overviewTextView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
         overviewTextView.autoPinEdge(.top, to: .bottom, of: overviewLabel, withOffset: 8.38)
         
-        collectionView.autoSetDimension(.height, toSize: 104)
+        collectionView.autoSetDimension(.height, toSize: 105)
         collectionView.autoPinEdge(.top, to: .bottom, of: overviewTextView, withOffset: 27.62)
         collectionView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
         collectionView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
+        collectionView.autoPinEdge(toSuperviewEdge: .bottom)
         
         flowLayout.scrollDirection = .vertical
         let spacing:CGFloat = 16
