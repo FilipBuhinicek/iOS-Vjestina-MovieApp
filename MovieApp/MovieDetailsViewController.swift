@@ -1,10 +1,3 @@
-//
-//  MovieDetailsViewController.swift
-//  MovieApp
-//
-//  Created by endava-bootcamp on 30.03.2023..
-//
-
 import Foundation
 import PureLayout
 import MovieAppData
@@ -22,6 +15,14 @@ class MovieDetailsViewController: UIViewController {
     private var flowLayout: UICollectionViewFlowLayout!
     private var collectionView: UICollectionView!
     let details = MovieUseCase().getDetails(id: 111161)
+    private var scrollView: UIScrollView!
+    private var contentView: UIView!
+    
+    func buildView() {
+        createViews()
+        styleViews()
+        defineLayoutForViews()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +30,14 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func createViews() {
+        scrollView = UIScrollView()
+        view.addSubview(scrollView)
+        
+        contentView = UIView()
+        scrollView.addSubview(contentView)
+        
         myImageView = UIImageView()
-        view.addSubview(myImageView)
+        contentView.addSubview(myImageView)
         
         ratingLabel = UILabel()
         myImageView.addSubview(ratingLabel)
@@ -51,14 +58,14 @@ class MovieDetailsViewController: UIViewController {
         myImageView.addSubview(favouriteButton)
         
         overviewLabel = UILabel()
-        view.addSubview(overviewLabel)
+        contentView.addSubview(overviewLabel)
         
         overviewTextView = UITextView()
-        view.addSubview(overviewTextView)
+        contentView.addSubview(overviewTextView)
         
         flowLayout = UICollectionViewFlowLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout )
-        view.addSubview(collectionView)
+        contentView.addSubview(collectionView)
     }
     
     func styleViews() {
@@ -149,6 +156,61 @@ class MovieDetailsViewController: UIViewController {
         overviewTextView.text = details?.summary
         overviewTextView.font = .systemFont(ofSize: 14)
         overviewTextView.isEditable = false
+    }
+    
+    func defineLayoutForViews() {
+        scrollView.autoPinEdgesToSuperviewEdges()
+        
+        contentView.autoMatch(.width, to: .width, of: scrollView)
+        contentView.autoPinEdge(toSuperviewEdge: .top)
+        contentView.autoPinEdge(toSuperviewEdge: .bottom)
+        contentView.autoPinEdge(toSuperviewEdge: .trailing)
+        contentView.autoPinEdge(toSuperviewEdge: .leading)
+        
+        myImageView.autoSetDimension(.height, toSize: 327)
+        myImageView.autoPinEdge(toSuperviewSafeArea: .leading)
+        myImageView.autoPinEdge(toSuperviewSafeArea: .trailing)
+        myImageView.autoPinEdge(toSuperviewSafeArea: .top)
+        
+        ratingLabel.autoSetDimensions(to: CGSize(width: 22, height: 19))
+        ratingLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        ratingLabel.autoPinEdge(toSuperviewSafeArea: .top, withInset: 134)
+        
+        userScoreLabel.autoSetDimensions(to: CGSize(width: 72, height: 17))
+        userScoreLabel.autoPinEdge(.leading, to: .trailing, of: ratingLabel, withOffset: 8)
+        userScoreLabel.autoPinEdge(toSuperviewSafeArea: .top, withInset: 135)
+        
+        nameLabel.autoSetDimensions(to: CGSize(width: 350, height: 34))
+        nameLabel.autoPinEdge(.top, to: .bottom, of: userScoreLabel, withOffset: 17)
+        nameLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        
+        yearLabel.autoSetDimensions(to: CGSize(width: 105, height: 20))
+        yearLabel.autoPinEdge(.top, to: .bottom, of: nameLabel, withOffset: 16)
+        yearLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        
+        genreLabel.autoSetDimensions(to: CGSize(width: 258, height: 20))
+        genreLabel.autoPinEdge(.top, to: .bottom, of: yearLabel)
+        genreLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        
+        favouriteButton.autoSetDimensions(to: CGSize(width: 32, height: 32))
+        favouriteButton.autoPinEdge(.top, to: .bottom, of: genreLabel, withOffset: 16)
+        favouriteButton.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        
+        overviewLabel.autoSetDimension(.height, toSize: 31)
+        overviewLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        overviewLabel.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)
+        overviewLabel.autoPinEdge(.top, to: .bottom, of: myImageView, withOffset: 22)
+
+        overviewTextView.autoSetDimension(.height, toSize: 64)
+        overviewTextView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
+        overviewTextView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
+        overviewTextView.autoPinEdge(.top, to: .bottom, of: overviewLabel, withOffset: 8.38)
+        
+        collectionView.autoSetDimension(.height, toSize: 105)
+        collectionView.autoPinEdge(.top, to: .bottom, of: overviewTextView, withOffset: 27.62)
+        collectionView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
+        collectionView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
+        collectionView.autoPinEdge(toSuperviewEdge: .bottom)
         
         flowLayout.scrollDirection = .vertical
         let spacing:CGFloat = 16
@@ -157,56 +219,6 @@ class MovieDetailsViewController: UIViewController {
         collectionView.register(MyCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.dataSource = self
         collectionView.delegate = self
-    }
-    
-    func defineLayoutForViews() {
-        myImageView.autoSetDimension(.height, toSize: 327)
-        myImageView.autoPinEdge(toSuperviewEdge: .leading)
-        myImageView.autoPinEdge(toSuperviewEdge: .trailing)
-        myImageView.autoPinEdge(toSuperviewEdge: .top)
-        
-        ratingLabel.autoSetDimensions(to: CGSize(width: 22, height: 19))
-        ratingLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
-        ratingLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 134)
-        
-        userScoreLabel.autoSetDimensions(to: CGSize(width: 72, height: 17))
-        userScoreLabel.autoPinEdge(.leading, to: .trailing, of: ratingLabel, withOffset: 8)
-        userScoreLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 135)
-        
-        nameLabel.autoSetDimensions(to: CGSize(width: 350, height: 34))
-        nameLabel.autoPinEdge(.top, to: .bottom, of: userScoreLabel, withOffset: 17)
-        nameLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
-        
-        yearLabel.autoSetDimensions(to: CGSize(width: 105, height: 20))
-        yearLabel.autoPinEdge(.top, to: .bottom, of: nameLabel, withOffset: 16)
-        yearLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
-        
-        genreLabel.autoSetDimensions(to: CGSize(width: 258, height: 20))
-        genreLabel.autoPinEdge(.top, to: .bottom, of: yearLabel)
-        genreLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
-        
-        favouriteButton.autoSetDimensions(to: CGSize(width: 32, height: 32))
-        favouriteButton.autoPinEdge(.top, to: .bottom, of: genreLabel, withOffset: 16)
-        favouriteButton.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
-        
-        overviewLabel.autoSetDimensions(to: CGSize(width: 350, height: 31))
-        overviewLabel.autoPinEdge(toSuperviewEdge: .leading, withInset: 20)
-        overviewLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 349)
-        
-        overviewTextView.autoSetDimensions(to: CGSize(width: 358, height: 64))
-        overviewTextView.autoPinEdge(toSuperviewEdge: .leading, withInset: 16)
-        overviewTextView.autoPinEdge(.top, to: .bottom, of: overviewLabel, withOffset: 8.38)
-        
-        collectionView.autoSetDimension(.height, toSize: 104)
-        collectionView.autoPinEdge(toSuperviewEdge: .top, withInset: 480)
-        collectionView.autoPinEdge(toSuperviewEdge: .leading)
-        collectionView.autoPinEdge(toSuperviewEdge: .trailing)
-    }
-
-    func buildView() {
-        createViews()
-        styleViews()
-        defineLayoutForViews()
     }
     
     func formatTime(minutes: Int) -> String {
@@ -241,6 +253,3 @@ extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: cellWidth, height: cellHeigth)
     }
 }
-
-
-

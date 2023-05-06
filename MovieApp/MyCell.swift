@@ -1,10 +1,3 @@
-//
-//  MyCell.swift
-//  MovieApp
-//
-//  Created by endava-bootcamp on 30.03.2023..
-//
-
 import Foundation
 import MovieAppData
 import PureLayout
@@ -20,9 +13,13 @@ class MyCell: UICollectionViewCell {
         defineLayoutForViwes()
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func createViews() {
-        self.addSubview(titleLabel)
-        self.addSubview(subtitleLabel)
+        addSubview(titleLabel)
+        addSubview(subtitleLabel)
     }
     
     func styleViews() {
@@ -45,9 +42,4 @@ class MyCell: UICollectionViewCell {
         subtitleLabel.autoPinEdge(.top, to: .bottom, of: titleLabel)
         subtitleLabel.autoPinEdge(toSuperviewEdge: .bottom)
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }

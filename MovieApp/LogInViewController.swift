@@ -1,10 +1,3 @@
-//
-//  LogInViewController.swift
-//  MovieApp
-//
-//  Created by endava-bootcamp on 28.03.2023..
-//
-
 import Foundation
 import UIKit
 import PureLayout
@@ -116,5 +109,4 @@ class LogInViewController: UIViewController {
         styleViews()
         defineLayoutForViews()
     }
-    
 }
