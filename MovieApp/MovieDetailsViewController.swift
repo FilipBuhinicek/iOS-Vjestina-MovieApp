@@ -14,7 +14,8 @@ class MovieDetailsViewController: UIViewController {
     private var overviewTextView: UITextView!
     private var flowLayout: UICollectionViewFlowLayout!
     private var collectionView: UICollectionView!
-    let details = MovieUseCase().getDetails(id: 111161)
+    private var details2 = MovieUseCase().getDetails(id: 111161)
+    private var details: MovieDetailsModel!
     private var scrollView: UIScrollView!
     private var contentView: UIView!
     
@@ -24,9 +25,20 @@ class MovieDetailsViewController: UIViewController {
         defineLayoutForViews()
     }
     
+    init(movieId: Int) {
+        super.init(nibName: nil, bundle: nil)
+        details = MovieUseCase().getDetails(id: movieId)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         buildView()
+        
+        navigationItem.title = "Movie Details"
     }
     
     func createViews() {

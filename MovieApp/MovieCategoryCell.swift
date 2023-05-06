@@ -5,10 +5,16 @@ import SDWebImage
 
 class MovieCategoryCell: UICollectionViewCell {
     var indexOf: Int!
-    private var collectionViewCell: UICollectionView!
+    var collectionViewCell: UICollectionView!
     private var flowLayout: UICollectionViewFlowLayout!
     private var title = UILabel()
     private var movies: [MovieModel] = []
+    private var router: AppRouter!
+    
+    convenience init(router: AppRouter){
+        self.init()
+        self.router = router
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,6 +64,11 @@ class MovieCategoryCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func handleGoToMovieDetials(movieId: Int){
+        let detailsVC = MovieDetailsViewController(movieId: movieId)
+        navigationController?.pushViewController(detailsVC, animated: true)
+    }
 }
 
 extension MovieCategoryCell: UICollectionViewDataSource {
@@ -84,3 +95,9 @@ extension MovieCategoryCell: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension MovieCategoryCell: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedMovie = movies[indexPath.row]
+        handleGoToMovieDetials(movieId: selectedMovie.id)
+    }
+}

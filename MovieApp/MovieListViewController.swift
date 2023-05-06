@@ -9,16 +9,28 @@ class MovieListViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var flowLayout: UICollectionViewFlowLayout!
     let moviesInfo = MovieUseCase()
+    private var router: AppRouter!
+    
+    convenience init(router: AppRouter){
+        self.init()
+        self.router = router
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         buildView()
+        navigationItem.title = "Movie List"
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
         collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    func handleGoToMovieDetials(movieId: Int){
+        let detailsVC = MovieDetailsViewController(movieId: movieId)
+        navigationController?.pushViewController(detailsVC, animated: true)
     }
     
     func createViews() {
@@ -73,5 +85,13 @@ extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width
         return CGSize(width: width, height: 142)
+    }
+}
+
+extension MovieListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedMovie = moviesInfo.allMovies[indexPath.item]
+        let movieId = selectedMovie.id
+        handleGoToMovieDetials(movieId: movieId)
     }
 }

@@ -5,7 +5,6 @@ import MovieAppData
 import SDWebImage
 
 class MovieCategoriesViewController: UIViewController {
-    
     private var moviesSection: UICollectionView!
     private var flowLayout: UICollectionViewFlowLayout!
     let movies = MovieUseCase()
@@ -14,11 +13,16 @@ class MovieCategoriesViewController: UIViewController {
         super.viewDidLoad()
         buildView()
     }
-    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
         moviesSection.collectionViewLayout.invalidateLayout()
+    }
+    
+    func buildView() {
+        createViews()
+        styleViews()
+        defineLayoutForViews()
     }
     
     func createViews() {
@@ -45,12 +49,6 @@ class MovieCategoriesViewController: UIViewController {
         moviesSection.dataSource = self
         moviesSection.delegate = self
     }
-
-    func buildView() {
-        createViews()
-        styleViews()
-        defineLayoutForViews()
-    }
 }
 
 extension MovieCategoriesViewController: UICollectionViewDataSource {
@@ -74,6 +72,9 @@ extension MovieCategoriesViewController: UICollectionViewDataSource {
             cell.set(title: "Trending", items: movies.trendingMovies)
         }
         cell.layoutIfNeeded()
+        cell.collectionViewCell.tag = indexPath.item
+        cell.collectionViewCell.delegate = self
+        cell.collectionViewCell.dataSource = cell
         return cell
     }
 }
