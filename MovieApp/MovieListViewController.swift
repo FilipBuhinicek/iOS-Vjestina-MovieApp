@@ -28,11 +28,6 @@ class MovieListViewController: UIViewController {
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
-    func handleGoToMovieDetials(movieId: Int){
-        let detailsVC = MovieDetailsViewController(movieId: movieId)
-        navigationController?.pushViewController(detailsVC, animated: true)
-    }
-    
     func createViews() {
         flowLayout = UICollectionViewFlowLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout )
@@ -91,7 +86,6 @@ extension MovieListViewController: UICollectionViewDelegateFlowLayout {
 extension MovieListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedMovie = moviesInfo.allMovies[indexPath.item]
-        let movieId = selectedMovie.id
-        handleGoToMovieDetials(movieId: movieId)
+        router.goToMovieDetails(movie: selectedMovie)
     }
 }

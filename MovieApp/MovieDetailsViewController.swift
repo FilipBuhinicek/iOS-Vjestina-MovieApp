@@ -18,6 +18,7 @@ class MovieDetailsViewController: UIViewController {
     private var details: MovieDetailsModel!
     private var scrollView: UIScrollView!
     private var contentView: UIView!
+    private var router: AppRouter
     
     func buildView() {
         createViews()
@@ -25,9 +26,10 @@ class MovieDetailsViewController: UIViewController {
         defineLayoutForViews()
     }
     
-    init(movieId: Int) {
-        super.init(nibName: nil, bundle: nil)
+    init(movieId: Int, router: AppRouter) {
         details = MovieUseCase().getDetails(id: movieId)
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {

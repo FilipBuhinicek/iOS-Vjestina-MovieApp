@@ -4,6 +4,17 @@ import PureLayout
 import UIKit
 
 class FavoritesViewController: UIViewController {
+    private var router: AppRouter
+        
+    init(router: AppRouter) {
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
+    }
+        
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func buildView() {
         createViews()
         styleViews()

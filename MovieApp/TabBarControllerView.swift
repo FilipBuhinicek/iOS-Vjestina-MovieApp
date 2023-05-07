@@ -3,8 +3,8 @@ import MovieAppData
 import PureLayout
 import UIKit
 
-class TabBarControllerView: UIViewController, UITabBarControllerDelegate{
-    private var myTabBarController: UITabBarController!
+class TabBarControllerView: UIViewController{
+    private var router: AppRouter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,24 +18,13 @@ class TabBarControllerView: UIViewController, UITabBarControllerDelegate{
     }
     
     func createViews(){
-        myTabBarController = MyTabBarController()
-        addChild(myTabBarController)
-        view.addSubview(myTabBarController.view)
+        router = AppRouter(with: self.navigationController!)
+        router.setTabBarNavigation()
+        self.navigationItem.title = "Movie List"
     }
     func styleViews(){
-        
     }
     func defineLayoutForViews(){
-        myTabBarController.didMove(toParent: self)
-        myTabBarController.delegate = self
-        tabBarController(myTabBarController, didSelect: MovieCategoriesViewController())
-    }
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-            if tabBarController.selectedIndex == 0 {
-                title = "Movie List"
-            } else {
-                title = nil
-            }
     }
 }
 
