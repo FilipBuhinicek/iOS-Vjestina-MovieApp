@@ -12,7 +12,7 @@ class MovieCategoryCell: UICollectionViewCell {
     var collectionViewCell: UICollectionView!
     private var flowLayout: UICollectionViewFlowLayout!
     private var title = UILabel()
-    private var movies: [MovieModel] = []
+    var movies: [MovieModel] = []
     weak var delegate: MovieCategoryCellDelegate?
     
     override init(frame: CGRect) {

@@ -25,10 +25,10 @@ class AppRouter: NSObject, UITabBarControllerDelegate{
 
     func goToMovieDetails(movie: MovieModel) {
         let movieDetailsViewController = MovieDetailsViewController(movieId: movie.id, router: self)
-
+        
         navigationController.pushViewController(movieDetailsViewController, animated: true)
     }
-
+    
     func goBack() {
         navigationController.popViewController(animated: true)
     }

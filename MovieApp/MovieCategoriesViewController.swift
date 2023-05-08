@@ -86,7 +86,7 @@ extension MovieCategoriesViewController: UICollectionViewDataSource {
         cell.layoutIfNeeded()
         cell.collectionViewCell.tag = indexPath.item
         cell.delegate = self
-        cell.collectionViewCell.delegate = self
+        cell.collectionViewCell.delegate = cell
         cell.collectionViewCell.dataSource = cell
         return cell
     }
@@ -101,6 +101,13 @@ extension MovieCategoriesViewController: UICollectionViewDelegateFlowLayout {
 
 extension MovieCategoriesViewController: MovieCategoryCellDelegate {
     func movieCategoryCell(_ cell: MovieCategoryCell, didSelectMovie movie: MovieModel) {
-        router.goToMovieDetails(movie: movie)
+       // if let tabBarController = self.tabBarController, tabBarController.selectedIndex == 0 {
+       //     let vc = tabBarController.parent as? TabBarControllerView
+       //     tabBarController.navigationController?.pushViewController(MovieDetailsViewController(movieId: movie.id,
+       //     router: self.router), animated: true)
+       // }
+       // else {
+            router.goToMovieDetails(movie: movie)
+       // }
     }
 }
