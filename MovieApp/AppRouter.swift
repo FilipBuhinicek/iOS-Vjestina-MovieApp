@@ -3,22 +3,26 @@ import PureLayout
 import UIKit
 import MovieAppData
 
-class AppRouter: NSObject, UITabBarControllerDelegate{
+class AppRouter {
 
-    private let navigationController: UINavigationController!
+    private let navigationController: UINavigationController
+    private let listNavigationController = UINavigationController()
+    private let favoritesNavigationController = UINavigationController()
     
     init(with navigationController: UINavigationController){
         self.navigationController = navigationController
+        self.navigationController.setNavigationBarHidden(true, animated: false)
     }
     
-    func setTabBarNavigation() {
+    func start() {
         let tabBarController = UITabBarController()
-        tabBarController.delegate = self
 
         let movieListViewController = createCategoriesController()
+        listNavigationController.setViewControllers([movieListViewController], animated: false)
         let favoriteMoviesViewController = createFavoritesController()
+        favoritesNavigationController.setViewControllers([favoriteMoviesViewController], animated: false)
 
-        tabBarController.viewControllers = [movieListViewController, favoriteMoviesViewController]
+        tabBarController.viewControllers = [listNavigationController, favoritesNavigationController]
 
         navigationController.setViewControllers([tabBarController], animated: false)
     }
@@ -26,7 +30,7 @@ class AppRouter: NSObject, UITabBarControllerDelegate{
     func goToMovieDetails(movie: MovieModel) {
         let movieDetailsViewController = MovieDetailsViewController(movieId: movie.id, router: self)
         
-        navigationController.pushViewController(movieDetailsViewController, animated: true)
+        listNavigationController.pushViewController(movieDetailsViewController, animated: true)
     }
     
     func goBack() {
@@ -50,17 +54,7 @@ class AppRouter: NSObject, UITabBarControllerDelegate{
         let emptyHomeImage = UIImage(systemName: "house")
         movieList.tabBarItem = UITabBarItem(title: "Movie List", image: emptyHomeImage, selectedImage: homeImage)
         movieList.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
-        
         return movieList
     }
- 
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if let navigationController = tabBarController.navigationController {
-            if tabBarController.selectedIndex == 0 {
-                navigationController.navigationBar.topItem?.title = "Movie List"
-            } else {
-                navigationController.navigationBar.topItem?.title = nil
-            }
-        }
-    }
+
 }

@@ -27,7 +27,6 @@ class TabBarControllerView: UIViewController{
     }
     
     func createViews(){
-        router.setTabBarNavigation()
         self.navigationItem.title = "Movie List"
     }
     func styleViews(){

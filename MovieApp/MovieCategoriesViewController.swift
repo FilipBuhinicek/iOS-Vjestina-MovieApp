@@ -52,10 +52,10 @@ class MovieCategoriesViewController: UIViewController {
     
     func defineLayoutForViews() {
         flowLayout.scrollDirection = .vertical
-        moviesSection.autoPinEdge(toSuperviewSafeArea: .top, withInset: 25)
-        moviesSection.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
-        moviesSection.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 45)
-        moviesSection.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
+        moviesSection.autoPinEdge(toSuperviewEdge: .top)
+        moviesSection.autoPinEdge(toSuperviewEdge: .leading, withInset: 16)
+        moviesSection.autoPinEdge(toSuperviewEdge: .trailing, withInset: 16)
+        moviesSection.autoPinEdge(toSuperviewEdge: .bottom)
         
         moviesSection.register(MovieCategoryCell.self, forCellWithReuseIdentifier: "MovieCategoryCell")
         moviesSection.dataSource = self
