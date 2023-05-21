@@ -1,29 +1,30 @@
 import Foundation
 import UIKit
+import Combine
 
-class MovieDetailsViewModel {
+class MovieDetailsViewModel: ObservableObject {
 
     private let dataSource: DataSource
-    //private let movieUseCase: MovieUseCaseProtocol
     private let dateFormatter: DateFormatter
-    private var movieDetails: MovieDetails?
-
+    @Published private var movieDetails: MovieDetails?
+    private var cancellables: Set<AnyCancellable> = []
+        
     init(dataSource: DataSource = DataSource(), dateFormatter: DateFormatter = DateFormatter()) {
         self.dataSource = dataSource
         self.dateFormatter = dateFormatter
     }
     
     func loadMovieDetails(movieId: Int) {
-        //movieDetails = movieUseCase.getDetails(id: movieId)
-        dataSource.fetchMovieDetails(for: movieId) { result in
-            switch result {
-            case .success(let details):
-                self.movieDetails = details
-                
-            case .failure(_): break
-            }
+            dataSource.fetchMovieDetails(for: movieId)
+                .sink { [weak self] completion in
+                    guard case let .failure(error) = completion else { return }
+                    // Handle error
+                    print("Failed to fetch movie details:", error)
+                } receiveValue: { [weak self] movieDetails in
+                    self?.movieDetails = movieDetails
+                }
+                .store(in: &cancellables)
         }
-    }
 
     var imageURL: String? {
         movieDetails?.imageUrl
@@ -114,7 +115,7 @@ class MovieDetailsViewModel {
 }
 
 struct CrewMemberConfig {
-    let crewMember: MovieCrewMemberModel
+    let crewMember: CrewMember
     var name: String { crewMember.name }
     var role: String { crewMember.role }
 }

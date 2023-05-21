@@ -1,6 +1,7 @@
 import Foundation
 import PureLayout
 import MovieAppData
+import Combine
 
 class MovieDetailsViewController: UIViewController {
     private var myImageView: UIImageView!
@@ -253,3 +254,4 @@ extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: cellWidth, height: cellHeigth)
     }
 }
+

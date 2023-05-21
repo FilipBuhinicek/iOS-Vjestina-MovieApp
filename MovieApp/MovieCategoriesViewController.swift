@@ -9,6 +9,7 @@ class MovieCategoriesViewController: UIViewController {
     private var flowLayout: UICollectionViewFlowLayout!
     let movies = MovieUseCase()
     private var router: AppRouter
+    private var viewModel = MovieCategoriesViewModel()
     
     init(router: AppRouter) {
         self.router = router
