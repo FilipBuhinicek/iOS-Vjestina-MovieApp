@@ -101,13 +101,6 @@ extension MovieCategoriesViewController: UICollectionViewDelegateFlowLayout {
 
 extension MovieCategoriesViewController: MovieCategoryCellDelegate {
     func movieCategoryCell(_ cell: MovieCategoryCell, didSelectMovie movie: MovieModel) {
-       // if let tabBarController = self.tabBarController, tabBarController.selectedIndex == 0 {
-       //     let vc = tabBarController.parent as? TabBarControllerView
-       //     tabBarController.navigationController?.pushViewController(MovieDetailsViewController(movieId: movie.id,
-       //     router: self.router), animated: true)
-       // }
-       // else {
-            router.goToMovieDetails(movie: movie)
-       // }
+        router.goToMovieDetails(movie: movie)
     }
 }
