@@ -17,6 +17,11 @@ class MyCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(with config: CrewMemberConfig) {
+        titleLabel.text = config.name
+        subtitleLabel.text = config.role
+    }
+    
     func createViews() {
         addSubview(titleLabel)
         addSubview(subtitleLabel)

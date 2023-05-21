@@ -1,6 +1,7 @@
 import Foundation
 import PureLayout
 import MovieAppData
+import Combine
 
 class MovieDetailsViewController: UIViewController {
     private var myImageView: UIImageView!
@@ -14,11 +15,10 @@ class MovieDetailsViewController: UIViewController {
     private var overviewTextView: UITextView!
     private var flowLayout: UICollectionViewFlowLayout!
     private var collectionView: UICollectionView!
-    private var details2 = MovieUseCase().getDetails(id: 111161)
-    private var details: MovieDetailsModel!
     private var scrollView: UIScrollView!
     private var contentView: UIView!
     private var router: AppRouter
+    private var viewModel = MovieDetailsViewModel()
     
     func buildView() {
         createViews()
@@ -27,8 +27,8 @@ class MovieDetailsViewController: UIViewController {
     }
     
     init(movieId: Int, router: AppRouter) {
-        details = MovieUseCase().getDetails(id: movieId)
         self.router = router
+        viewModel.loadMovieDetails(movieId: movieId)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -113,12 +113,12 @@ class MovieDetailsViewController: UIViewController {
     
     func styleViews() {
         view.backgroundColor = .white
-        guard let url = details?.imageUrl else { return }
-        myImageView.loadFrom(URLAddress: url)
+        if let url = viewModel.imageURL {
+            myImageView.loadFrom(URLAddress: url)
+        }
         
         ratingLabel.textColor = .white
-        let stringText = String(Double(details?.rating ?? 0.0))
-        ratingLabel.text = stringText
+        ratingLabel.text = viewModel.movieRatings
         ratingLabel.font = .boldSystemFont(ofSize: 14)
         
         userScoreLabel.textColor = .white
@@ -126,60 +126,18 @@ class MovieDetailsViewController: UIViewController {
         userScoreLabel.font = .systemFont(ofSize: 12)
         
         nameLabel.textColor = .white
-        nameLabel.text = details?.name
+        nameLabel.text = viewModel.movieName
         nameLabel.font = .boldSystemFont(ofSize: 24)
         
         yearLabel.textColor = .white
-        guard let stringDatum = details?.releaseDate else { return }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        if let date = dateFormatter.date(from: stringDatum) {
-            dateFormatter.dateFormat = "MM/dd/yyyy"
-            let formattedDate = dateFormatter.string(from: date)
-            yearLabel.text = formattedDate + " (US)"
+
+        if let releaseDate = viewModel.releaseDate {
+            yearLabel.text = releaseDate
+            yearLabel.font = .systemFont(ofSize: 12)
         }
-        yearLabel.font = .systemFont(ofSize: 12)
-        
+
         genreLabel.textColor = .white
-        var string = ""
-        let length: Int = details?.categories.count ?? 0
-        for i in 0..<length {
-            if details?.categories[i] == MovieCategoryModel.action {
-                string = string + "Action, "
-            }
-            if details?.categories[i] == MovieCategoryModel.adventure {
-                string = string + "Adventure, "
-            }
-            if details?.categories[i] == MovieCategoryModel.comedy {
-                string = string + "Comedy, "
-            }
-            if details?.categories[i] == MovieCategoryModel.crime {
-                string = string + "Crime, "
-            }
-            if details?.categories[i] == MovieCategoryModel.drama {
-                string = string + "Drama, "
-            }
-            if details?.categories[i] == MovieCategoryModel.fantasy {
-                string = string + "Fantasy, "
-            }
-            if details?.categories[i] == MovieCategoryModel.romance {
-                string = string + "Romance, "
-            }
-            if details?.categories[i] == MovieCategoryModel.scienceFiction {
-                string = string + "Science fiction, "
-            }
-            if details?.categories[i] == MovieCategoryModel.thriller {
-                string = string + "Thriller, "
-            }
-            if details?.categories[i] == MovieCategoryModel.western {
-                string = string + "Western, "
-            }
-        }
-        let duration = formatTime(minutes: details?.duration ?? 0)
-        string = string.trimmingCharacters(in: [" ", ","])
-        string.append(" ")
-        string.append(duration)
-        genreLabel.text = string
+        genreLabel.text = viewModel.duration
         genreLabel.font = .systemFont(ofSize: 12)
         
         favouriteButton.alpha = 0.6
@@ -196,7 +154,7 @@ class MovieDetailsViewController: UIViewController {
         overviewLabel.font = .boldSystemFont(ofSize: 20)
         
         overviewTextView.textColor = .black
-        overviewTextView.text = details?.summary
+        overviewTextView.text = viewModel.summary
         overviewTextView.font = .systemFont(ofSize: 14)
         overviewTextView.isEditable = false
     }
@@ -273,7 +231,7 @@ class MovieDetailsViewController: UIViewController {
 
 extension MovieDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        details?.crewMembers.count ?? 0
+        viewModel.crewMembers
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -281,9 +239,9 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! MyCell
-        let data = details?.crewMembers[indexPath.item]
-        cell.titleLabel.text = data?.name
-        cell.subtitleLabel.text = data?.role
+        if let cellConfig = viewModel.crewMember(at: indexPath) {
+            cell.configure(with: cellConfig)
+        }
         return cell
     }
 }
@@ -296,3 +254,4 @@ extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: cellWidth, height: cellHeigth)
     }
 }
+

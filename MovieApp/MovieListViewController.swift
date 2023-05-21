@@ -10,6 +10,7 @@ class MovieListViewController: UIViewController {
     private var flowLayout: UICollectionViewFlowLayout!
     let moviesInfo = MovieUseCase()
     private var router: AppRouter!
+    private var viewModel = MovieListViewModel()
     
     convenience init(router: AppRouter){
         self.init()
