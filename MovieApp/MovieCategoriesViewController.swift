@@ -5,20 +5,36 @@ import MovieAppData
 import SDWebImage
 
 class MovieCategoriesViewController: UIViewController {
-    
     private var moviesSection: UICollectionView!
     private var flowLayout: UICollectionViewFlowLayout!
     let movies = MovieUseCase()
+    private var router: AppRouter
+    
+    init(router: AppRouter) {
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
+    }
+        
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         buildView()
+        
+        navigationItem.title = "Movie List"
     }
-    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
         moviesSection.collectionViewLayout.invalidateLayout()
+    }
+    
+    func buildView() {
+        createViews()
+        styleViews()
+        defineLayoutForViews()
     }
     
     func createViews() {
@@ -36,20 +52,14 @@ class MovieCategoriesViewController: UIViewController {
     
     func defineLayoutForViews() {
         flowLayout.scrollDirection = .vertical
-        moviesSection.autoPinEdge(toSuperviewSafeArea: .top, withInset: 25)
-        moviesSection.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
-        moviesSection.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 45)
-        moviesSection.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
+        moviesSection.autoPinEdge(toSuperviewEdge: .top)
+        moviesSection.autoPinEdge(toSuperviewEdge: .leading, withInset: 16)
+        moviesSection.autoPinEdge(toSuperviewEdge: .trailing, withInset: 16)
+        moviesSection.autoPinEdge(toSuperviewEdge: .bottom)
         
         moviesSection.register(MovieCategoryCell.self, forCellWithReuseIdentifier: "MovieCategoryCell")
         moviesSection.dataSource = self
         moviesSection.delegate = self
-    }
-
-    func buildView() {
-        createViews()
-        styleViews()
-        defineLayoutForViews()
     }
 }
 
@@ -74,6 +84,10 @@ extension MovieCategoriesViewController: UICollectionViewDataSource {
             cell.set(title: "Trending", items: movies.trendingMovies)
         }
         cell.layoutIfNeeded()
+        cell.collectionViewCell.tag = indexPath.item
+        cell.delegate = self
+        cell.collectionViewCell.delegate = cell
+        cell.collectionViewCell.dataSource = cell
         return cell
     }
 }
@@ -82,5 +96,18 @@ extension MovieCategoriesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width
         return CGSize(width: width, height: 223)
+    }
+}
+
+extension MovieCategoriesViewController: MovieCategoryCellDelegate {
+    func movieCategoryCell(_ cell: MovieCategoryCell, didSelectMovie movie: MovieModel) {
+       // if let tabBarController = self.tabBarController, tabBarController.selectedIndex == 0 {
+       //     let vc = tabBarController.parent as? TabBarControllerView
+       //     tabBarController.navigationController?.pushViewController(MovieDetailsViewController(movieId: movie.id,
+       //     router: self.router), animated: true)
+       // }
+       // else {
+            router.goToMovieDetails(movie: movie)
+       // }
     }
 }

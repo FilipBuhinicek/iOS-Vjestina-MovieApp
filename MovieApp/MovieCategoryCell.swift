@@ -3,12 +3,17 @@ import PureLayout
 import MovieAppData
 import SDWebImage
 
+protocol MovieCategoryCellDelegate: AnyObject {
+    func movieCategoryCell(_ cell: MovieCategoryCell, didSelectMovie movie: MovieModel)
+}
+
 class MovieCategoryCell: UICollectionViewCell {
     var indexOf: Int!
-    private var collectionViewCell: UICollectionView!
+    var collectionViewCell: UICollectionView!
     private var flowLayout: UICollectionViewFlowLayout!
     private var title = UILabel()
-    private var movies: [MovieModel] = []
+    var movies: [MovieModel] = []
+    weak var delegate: MovieCategoryCellDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -16,7 +21,11 @@ class MovieCategoryCell: UICollectionViewCell {
         styleViews()
         defineLayoutForViwes()
     }
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func set(title: String, items: [MovieModel]) {
         self.title.text = title
         movies = items
@@ -55,9 +64,6 @@ class MovieCategoryCell: UICollectionViewCell {
         flowLayout.minimumInteritemSpacing = CGFloat(spacing)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }
 
 extension MovieCategoryCell: UICollectionViewDataSource {
@@ -84,3 +90,9 @@ extension MovieCategoryCell: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension MovieCategoryCell: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedMovie = movies[indexPath.item]
+        delegate?.movieCategoryCell(self, didSelectMovie: selectedMovie)
+    }
+}

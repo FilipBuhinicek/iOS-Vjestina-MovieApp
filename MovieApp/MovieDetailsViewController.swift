@@ -14,9 +14,11 @@ class MovieDetailsViewController: UIViewController {
     private var overviewTextView: UITextView!
     private var flowLayout: UICollectionViewFlowLayout!
     private var collectionView: UICollectionView!
-    let details = MovieUseCase().getDetails(id: 111161)
+    private var details2 = MovieUseCase().getDetails(id: 111161)
+    private var details: MovieDetailsModel!
     private var scrollView: UIScrollView!
     private var contentView: UIView!
+    private var router: AppRouter
     
     func buildView() {
         createViews()
@@ -24,9 +26,50 @@ class MovieDetailsViewController: UIViewController {
         defineLayoutForViews()
     }
     
+    init(movieId: Int, router: AppRouter) {
+        details = MovieUseCase().getDetails(id: movieId)
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         buildView()
+        
+        navigationItem.title = "Movie Details"
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        ratingLabel.transform = ratingLabel.transform.translatedBy(x: -view.frame.width, y: 0)
+        userScoreLabel.transform = ratingLabel.transform.translatedBy(x: -view.frame.width, y: 0)
+        nameLabel.transform = ratingLabel.transform.translatedBy(x: -view.frame.width, y: 0)
+        genreLabel.transform = ratingLabel.transform.translatedBy(x: -view.frame.width, y: 0)
+        yearLabel.transform = ratingLabel.transform.translatedBy(x: -view.frame.width, y: 0)
+        overviewTextView.transform = ratingLabel.transform.translatedBy(x: -view.frame.width, y: 0)
+        
+        collectionView.alpha = 0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.ratingLabel.transform = .identity
+            self.userScoreLabel.transform = .identity
+            self.nameLabel.transform = .identity
+            self.genreLabel.transform = .identity
+            self.yearLabel.transform = .identity
+            self.overviewTextView.transform = .identity
+        }, completion: {_ in
+            UIView.animate(withDuration: 0.3, animations: {self.collectionView.alpha = 1})
+        })
+        
     }
     
     func createViews() {

@@ -9,10 +9,17 @@ class MovieListViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var flowLayout: UICollectionViewFlowLayout!
     let moviesInfo = MovieUseCase()
+    private var router: AppRouter!
+    
+    convenience init(router: AppRouter){
+        self.init()
+        self.router = router
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         buildView()
+        navigationItem.title = "Movie List"
     }
     
     override func viewWillLayoutSubviews() {
@@ -35,14 +42,12 @@ class MovieListViewController: UIViewController {
     
     func defineLayoutForViews() {
         flowLayout.scrollDirection = .vertical
-        collectionView.autoPinEdge(toSuperviewSafeArea: .top, withInset: 32)
-        collectionView.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 45)
-        collectionView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 16)
-        collectionView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 16)
+        collectionView.autoPinEdgesToSuperviewEdges()
         
         collectionView.register(MovieListCell.self, forCellWithReuseIdentifier: "MovieListCell")
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.backgroundColor = .blue
     }
 
     func buildView() {
@@ -61,11 +66,11 @@ extension MovieListViewController: UICollectionViewDataSource {
         1
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieListCell", for: indexPath) as! MovieListCell?
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieListCell", for: indexPath) as! MovieListCell
         let movie = moviesInfo.allMovies[indexPath.item]
-        cell?.configureCell(movie: movie)
-        cell?.layoutIfNeeded()
-        return cell!
+        cell.configureCell(movie: movie)
+        cell.layoutIfNeeded()
+        return cell
     }
 }
 
@@ -73,5 +78,12 @@ extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width
         return CGSize(width: width, height: 142)
+    }
+}
+
+extension MovieListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedMovie = moviesInfo.allMovies[indexPath.item]
+        router.goToMovieDetails(movie: selectedMovie)
     }
 }
