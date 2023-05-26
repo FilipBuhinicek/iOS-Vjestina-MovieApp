@@ -140,7 +140,6 @@ class MovieDetailsViewController: UIViewController {
         }
 
         genreLabel.textColor = .white
-        genreLabel.text = viewModel.duration
         genreLabel.font = .systemFont(ofSize: 12)
         
         favouriteButton.alpha = 0.6

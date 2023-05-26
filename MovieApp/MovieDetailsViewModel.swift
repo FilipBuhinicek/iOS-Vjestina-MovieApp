@@ -48,55 +48,7 @@ class MovieDetailsViewModel: ObservableObject {
         return formattedDate + " (US)"
     }
 
-    var duration: String {
-        var string = ""
-        let length: Int = movieDetails.categories.count ?? 0
-        for i in 0..<length {
-            if movieDetails.categories[i] == MovieCategoryModel.action.rawValue {
-                string = string + "Action, "
-            }
-            if movieDetails.categories[i] == MovieCategoryModel.adventure.rawValue {
-                string = string + "Adventure, "
-            }
-            if movieDetails.categories[i] == MovieCategoryModel.comedy.rawValue {
-                string = string + "Comedy, "
-            }
-            if movieDetails.categories[i] == MovieCategoryModel.crime.rawValue {
-                string = string + "Crime, "
-            }
-            if movieDetails.categories[i] == MovieCategoryModel.drama.rawValue {
-                string = string + "Drama, "
-            }
-            if movieDetails.categories[i] == MovieCategoryModel.fantasy.rawValue {
-                string = string + "Fantasy, "
-            }
-            if movieDetails.categories[i] == MovieCategoryModel.romance.rawValue {
-                string = string + "Romance, "
-            }
-            if movieDetails.categories[i] == MovieCategoryModel.scienceFiction.rawValue {
-                string = string + "Science fiction, "
-            }
-            if movieDetails.categories[i] == MovieCategoryModel.thriller.rawValue {
-                string = string + "Thriller, "
-            }
-            if movieDetails.categories[i] == MovieCategoryModel.western.rawValue {
-                string = string + "Western, "
-            }
-        }
-        let duration = formatTime(minutes: movieDetails.duration ?? 0)
-
-        string = string.trimmingCharacters(in: [" ", ","])
-        string.append(" ")
-        string.append(duration)
-
-        return string
-    }
-
-    private func formatTime(minutes: Int) -> String {
-        let hours = minutes / 60
-        let minute = minutes % 60
-        return String(format: "%2dh %2dm", hours,minute)
-    }
+    
 
     var summary: String? {
         movieDetails.summary
@@ -105,12 +57,6 @@ class MovieDetailsViewModel: ObservableObject {
     var crewMembers: Int {
         movieDetails.crewMembers.count
     }
-}
-
-struct CrewMemberConfig {
-    let crewMember: CrewMember
-    var name: String { crewMember.name }
-    var role: String { crewMember.role }
 }
 
 // MARK: - Navigation
