@@ -2,8 +2,10 @@ import Foundation
 import PureLayout
 import MovieAppData
 import Combine
+import Kingfisher
 
 class MovieDetailsViewController: UIViewController {
+    private var movieId: Int
     private var myImageView: UIImageView!
     private var ratingLabel: UILabel!
     private var userScoreLabel: UILabel!
@@ -17,18 +19,19 @@ class MovieDetailsViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var scrollView: UIScrollView!
     private var contentView: UIView!
-    private var router: AppRouter
-    private var viewModel = MovieDetailsViewModel()
+    private var viewModel: MovieDetailsViewModel
+    private var cancellables: Set<AnyCancellable> = []
     
-    func buildView() {
+    private func buildView() {
         createViews()
         styleViews()
         defineLayoutForViews()
     }
     
-    init(movieId: Int, router: AppRouter) {
-        self.router = router
-        viewModel.loadMovieDetails(movieId: movieId)
+    init(movieId: Int, viewModel: MovieDetailsViewModel) {
+        self.viewModel = viewModel
+        self.movieId = movieId
+
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -39,12 +42,15 @@ class MovieDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         buildView()
+        bindViews()
         
         navigationItem.title = "Movie Details"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        viewModel.loadMovieDetails(movieId: movieId)
         
         ratingLabel.transform = ratingLabel.transform.translatedBy(x: -view.frame.width, y: 0)
         userScoreLabel.transform = ratingLabel.transform.translatedBy(x: -view.frame.width, y: 0)
@@ -113,9 +119,6 @@ class MovieDetailsViewController: UIViewController {
     
     func styleViews() {
         view.backgroundColor = .white
-        if let url = viewModel.imageURL {
-            myImageView.loadFrom(URLAddress: url)
-        }
         
         ratingLabel.textColor = .white
         ratingLabel.text = viewModel.movieRatings
@@ -217,10 +220,36 @@ class MovieDetailsViewController: UIViewController {
         let spacing:CGFloat = 16
         flowLayout.minimumInteritemSpacing = CGFloat(spacing)
         flowLayout.minimumLineSpacing = CGFloat(spacing)
-        collectionView.register(MyCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(MyCell.self, forCellWithReuseIdentifier: MyCell.reuseIdentifier)
         collectionView.dataSource = self
         collectionView.delegate = self
     }
+
+    private func bindViews() {
+        viewModel
+            .$movieDetails
+            .sink { [weak self] details in
+                guard let self else { return }
+
+                self.update(movideDetails: details)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func update(movideDetails: MovieDetails) {
+        DispatchQueue.main.async {
+            self.nameLabel.text = movideDetails.name
+            self.overviewTextView.text = movideDetails.summary
+            self.collectionView.reloadData()
+
+            let time = self.formatTime(minutes: movideDetails.duration)
+            self.genreLabel.text = time
+
+            let url = URL(string: movideDetails.imageUrl)
+            self.myImageView.kf.setImage(with: url)
+        }
+    }
+
     
     func formatTime(minutes: Int) -> String {
         let hours = minutes / 60
@@ -231,17 +260,23 @@ class MovieDetailsViewController: UIViewController {
 
 extension MovieDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.crewMembers
+        viewModel.movieDetails.crewMembers.count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! MyCell
-        if let cellConfig = viewModel.crewMember(at: indexPath) {
-            cell.configure(with: cellConfig)
+        guard
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCell.reuseIdentifier, for: indexPath) as? MyCell
+        else {
+            fatalError()
         }
+
+        let member = viewModel.movieDetails.crewMembers[indexPath.item]
+
+        cell.configure(with: member)
+
         return cell
     }
 }

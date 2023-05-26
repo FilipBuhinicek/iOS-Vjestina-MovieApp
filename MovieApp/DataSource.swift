@@ -3,10 +3,10 @@ import Combine
 
 class DataSource {
     let baseURL = "https://five-ios-api.herokuapp.com/api/v1/movie/"
-    let token = "Bearer Zpu7bOQYLNiCkT32V3c9BPoxDMfxisPAfevLW6ps"
+    let token = "Zpu7bOQYLNiCkT32V3c9BPoxDMfxisPAfevLW6ps"
     
     func fetchMovieDetails(for id: Int) -> AnyPublisher<MovieDetails, Error> {
-        let url = URL(string: "\(baseURL)\(id)")!
+        let url = URL(string: "\(baseURL)\(id)/details")!
         var request = URLRequest(url: url)
         request.setValue(token, forHTTPHeaderField: "Authorization")
         
@@ -33,10 +33,9 @@ struct MovieDetails: Codable {
 struct CrewMember: Codable {
     let name: String
     let role: String
-    
 }
 
-public enum MovieCategoryModel: String,Equatable {
+public enum MovieCategoryModel: String, Equatable {
 
     case action
     case adventure
@@ -51,9 +50,7 @@ public enum MovieCategoryModel: String,Equatable {
 
 }
 
-public struct MovieCrewMemberModel: Equatable,Codable {
-
+public struct MovieCrewMemberModel: Equatable, Codable {
     public let name: String
     public let role: String
-
 }

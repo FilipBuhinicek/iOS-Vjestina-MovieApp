@@ -32,6 +32,7 @@
 		6E9959C52A0581BD00BA34AE /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9959C42A0581BD00BA34AE /* FavoritesViewController.swift */; };
 		6E9959C92A0585EF00BA34AE /* TabBarControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9959C82A0585EF00BA34AE /* TabBarControllerView.swift */; };
 		6E9959CB2A0653A100BA34AE /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9959CA2A0653A100BA34AE /* AppRouter.swift */; };
+		EBDD670D2A20E94200FF65F6 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = EBDD670C2A20E94200FF65F6 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBDD670D2A20E94200FF65F6 /* Kingfisher in Frameworks */,
 				6E1F95D129E3FEB700A8464F /* SDWebImage in Frameworks */,
 				6E7C150129D3290C0002D4D9 /* PureLayout in Frameworks */,
 				6E7C150429D329530002D4D9 /* MovieAppData in Frameworks */,
@@ -97,6 +99,7 @@
 				6E7C14EB29D328820002D4D9 /* AppDelegate.swift */,
 				6E7C150529D347E20002D4D9 /* LogInViewController.swift */,
 				6E26665E29D5956100448EBC /* MovieDetailsViewController.swift */,
+				6E477B962A195F3E0025DFCD /* MovieDetailsViewModel.swift */,
 				6E1F95D229E4142600A8464F /* MovieCategoriesViewController.swift */,
 				6E1F95D429E4196300A8464F /* MovieCategoryCell.swift */,
 				6E1F95D629E41FB700A8464F /* MovieCategoryListCell.swift */,
@@ -114,7 +117,6 @@
 				6E9959C82A0585EF00BA34AE /* TabBarControllerView.swift */,
 				6E9959CA2A0653A100BA34AE /* AppRouter.swift */,
 				6E477B942A1955080025DFCD /* DataSource.swift */,
-				6E477B962A195F3E0025DFCD /* MovieDetailsViewModel.swift */,
 				6E6B69F82A1A576600D8272E /* MovieCategoriesViewModel.swift */,
 				6E6B69FA2A1A580200D8272E /* MovieListViewModel.swift */,
 			);
@@ -141,6 +143,7 @@
 				6E7C150029D3290C0002D4D9 /* PureLayout */,
 				6E7C150329D329530002D4D9 /* MovieAppData */,
 				6E1F95D029E3FEB700A8464F /* SDWebImage */,
+				EBDD670C2A20E94200FF65F6 /* Kingfisher */,
 			);
 			productName = MovieApp;
 			productReference = 6E7C14E829D328820002D4D9 /* MovieApp.app */;
@@ -174,6 +177,7 @@
 				6E7C14FF29D3290C0002D4D9 /* XCRemoteSwiftPackageReference "PureLayout" */,
 				6E7C150229D329530002D4D9 /* XCRemoteSwiftPackageReference "MovieAppData" */,
 				6E1F95CF29E3FEB700A8464F /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				EBDD670B2A20E94200FF65F6 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 6E7C14E929D328820002D4D9 /* Products */;
 			projectDirPath = "";
@@ -462,6 +466,14 @@
 				minimumVersion = 2.1.0;
 			};
 		};
+		EBDD670B2A20E94200FF65F6 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -479,6 +491,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6E7C150229D329530002D4D9 /* XCRemoteSwiftPackageReference "MovieAppData" */;
 			productName = MovieAppData;
+		};
+		EBDD670C2A20E94200FF65F6 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBDD670B2A20E94200FF65F6 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

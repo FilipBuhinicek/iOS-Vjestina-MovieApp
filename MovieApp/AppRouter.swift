@@ -28,7 +28,8 @@ class AppRouter {
     }
 
     func goToMovieDetails(movie: MovieModel) {
-        let movieDetailsViewController = MovieDetailsViewController(movieId: movie.id, router: self)
+        let viewModel = MovieDetailsViewModel(router: self)
+        let movieDetailsViewController = MovieDetailsViewController(movieId: movie.id, viewModel: viewModel)
         
         listNavigationController.pushViewController(movieDetailsViewController, animated: true)
     }
@@ -49,7 +50,8 @@ class AppRouter {
     }
 
     private func createCategoriesController() -> UIViewController {
-        let movieList = MovieCategoriesViewController(router: self)
+        let viewModel = MovieCategoriesViewModel()
+        let movieList = MovieCategoriesViewController(router: self, viewModel: viewModel)
         let homeImage = UIImage(systemName: "house.fill")?.withTintColor(.black, renderingMode: .alwaysOriginal)
         let emptyHomeImage = UIImage(systemName: "house")
         movieList.tabBarItem = UITabBarItem(title: "Movie List", image: emptyHomeImage, selectedImage: homeImage)

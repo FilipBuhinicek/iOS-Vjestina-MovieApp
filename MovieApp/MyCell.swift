@@ -1,8 +1,9 @@
 import Foundation
-import MovieAppData
 import PureLayout
 
 class MyCell: UICollectionViewCell {
+    static let reuseIdentifier = String(describing: MyCell.self)
+
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     
@@ -17,9 +18,9 @@ class MyCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with config: CrewMemberConfig) {
-        titleLabel.text = config.name
-        subtitleLabel.text = config.role
+    func configure(with member: CrewMember) {
+        titleLabel.text = member.name
+        subtitleLabel.text = member.role
     }
     
     func createViews() {
